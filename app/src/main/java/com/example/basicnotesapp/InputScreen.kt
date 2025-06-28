@@ -20,11 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun InputScreen(onSubmit: (TextData) -> Unit = {}, onDismiss: () -> Unit = {}) {
+fun InputScreen(navController: NavController, entries: MutableList<TextData>) {
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
     Column(
@@ -54,7 +54,7 @@ fun InputScreen(onSubmit: (TextData) -> Unit = {}, onDismiss: () -> Unit = {}) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { onDismiss() },
+                onClick = { navController.popBackStack() },
                 modifier = Modifier.width(150.dp).height(48.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -64,7 +64,8 @@ fun InputScreen(onSubmit: (TextData) -> Unit = {}, onDismiss: () -> Unit = {}) {
             Button(
                 onClick = {
                     if (title.isNotEmpty() && body.isNotEmpty()) {
-                        onSubmit(TextData(title, body))
+                        entries.add(TextData(title, body))
+                        navController.navigate(Routes.ShowData)
                     }
                 },
                 modifier = Modifier.width(150.dp).height(48.dp),

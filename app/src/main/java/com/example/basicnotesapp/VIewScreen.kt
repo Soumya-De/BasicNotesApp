@@ -18,42 +18,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun ViewScreen() {
-    val info = remember { mutableStateListOf<TextData>() }
-    var showScreen by remember { mutableStateOf(false) }
+fun ViewScreen(navController: NavController,entries: List<TextData>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
-        items(info) { i ->
+        items(entries) { i ->
             CardUI(index = i)
         }
     }
-    if (showScreen) {
-        InputScreen(
-            onSubmit = {
-                info.add(it)
-                showScreen = false
-            },
-            onDismiss = { showScreen = false }
-        )
-    }
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
-            onClick = { showScreen = true },
+            onClick = { navController.navigate(Routes.EnterData) },
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.BottomEnd),
